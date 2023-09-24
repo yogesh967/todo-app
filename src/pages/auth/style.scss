@@ -1,0 +1,39 @@
+.auth-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 1em;
+  height: 100vh;
+  background-color: #f2f2f2;
+}
+
+.todo-logo {
+  display: flex;
+  justify-content: space-evenly;
+  padding-bottom: 2em;
+}
+
+.auth-form-box {
+  padding: 2em;
+  border-radius: 0.5em;
+  background-color: #fff;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+
+  button {
+    margin-top: 1.8em;
+    background-color: #4361ee;
+  }
+}
+
+.auth-heading {
+  padding-bottom: 0.6em;
+}
+
+.auth-box {
+  margin: 0 auto !important;
+  text-align: center;
+}
+
+.auth-link-box {
+  padding-top: 1.2em;
+}
