@@ -1,9 +1,9 @@
 import { Grid } from "@mui/material";
 import { useEffect, useState } from "react";
-import CustomButton from "../../../components/customButton";
-import CustomHeading from "../../../components/customHeading";
-import CustomLink from "../../../components/customLink";
-import CustomTextField from "../../../components/customTextField";
+import CustomButton from "../../../components/button";
+import CustomHeading from "../../../components/heading";
+import CustomLink from "../../../components/link";
+import CustomTextField from "../../../components/textField";
 import Logo from "../../../components/logo";
 import {
   isBlankField,
@@ -11,6 +11,7 @@ import {
   isValidPassword,
 } from "../../../utils/validation";
 import "./../style.scss";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const initialState = {
@@ -20,6 +21,8 @@ const Login = () => {
     password: "",
     token: "",
   };
+  const navigate = useNavigate();
+
   const [userValues, setUserValues] = useState(initialState);
   const [formErrors, setFormErrors] = useState({});
   const [submitForm, setSubmitForm] = useState(false);
@@ -27,15 +30,13 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setFormErrors(validateForm(userValues));
-    // console.log(formErrors);
     setSubmitForm(true);
   };
 
   useEffect(() => {
-    // console.log("submit useEffect: ");
-
     if (submitForm && Object.keys(formErrors).length === 0) {
       // console.log(userValues);
+      navigate("/todo");
     }
   }, [formErrors]);
 
@@ -70,12 +71,13 @@ const Login = () => {
           </div>
           <div className="auth-form-box">
             <div className="auth-heading">
-              <CustomHeading heading="Login" variant="h5" />
+              <CustomHeading title="Login" variant="h5" />
             </div>
             <div className="auth-form">
               <form>
                 <CustomTextField
                   variant="standard"
+                  margin="normal"
                   autoFocus={true}
                   label="Email Address"
                   name="email"
@@ -88,6 +90,7 @@ const Login = () => {
 
                 <CustomTextField
                   variant="standard"
+                  margin="normal"
                   label="Password"
                   type="password"
                   name="password"
@@ -99,7 +102,7 @@ const Login = () => {
                 />
 
                 <CustomButton
-                  label="Submit"
+                  label="Login"
                   fullWidth={true}
                   variant="contained"
                   type="submit"

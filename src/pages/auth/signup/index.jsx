@@ -1,12 +1,13 @@
 import { Grid } from "@mui/material";
 import { useEffect, useState } from "react";
-import CustomButton from "../../../components/customButton";
-import CustomHeading from "../../../components/customHeading";
-import CustomLink from "../../../components/customLink";
-import CustomTextField from "../../../components/customTextField";
+import CustomButton from "../../../components/button";
+import CustomHeading from "../../../components/heading";
+import CustomLink from "../../../components/link";
+import CustomTextField from "../../../components/textField";
 import Logo from "../../../components/logo";
 import {
   isBlankField,
+  isValidConfirmPassword,
   isValidEmail,
   isValidName,
   isValidPassword,
@@ -19,23 +20,34 @@ const Signup = () => {
     lastName: "",
     email: "",
     password: "",
+    confirmPassword: "",
   };
   const [userValues, setUserValues] = useState(initialState);
   const [formErrors, setFormErrors] = useState({});
-  const [submitForm, setSubmitForm] = useState(false);
+  const [isSubmit, setIsSubmit] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setFormErrors(validateForm(userValues));
     console.log(formErrors);
-    setSubmitForm(true);
+    setIsSubmit(true);
   };
 
   useEffect(() => {
     console.log("submit useEffect: ");
 
-    if (submitForm && Object.keys(formErrors).length === 0) {
+    if (isSubmit && Object.keys(formErrors).length === 0) {
       console.log(userValues);
+      const requestOptions = {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          firstName: userValues?.firstName,
+          lastName: userValues?.lastName,
+          email: userValues?.email,
+          password: userValues.con,
+        }),
+      };
     }
   }, [formErrors]);
 
@@ -53,6 +65,9 @@ const Signup = () => {
     const email = isValidEmail(values.email) || isBlankField(values.email);
     const password =
       isValidPassword(values.password) || isBlankField(values.password);
+    const confirmPassword =
+      isValidConfirmPassword(values.password, values.confirmPassword) ||
+      isBlankField(values.confirmPassword);
 
     if (firstName !== "") {
       errors.firstNameErrorFlag = true;
@@ -73,8 +88,15 @@ const Signup = () => {
       errors.passwordErrorFlag = true;
       errors.passwordHelperText = password;
     }
+    if (confirmPassword !== "") {
+      console.log("confirm pass function");
+      errors.confirmPasswordErrorFlag = true;
+      errors.confirmPasswordHelperText = confirmPassword;
+    }
     return errors;
   };
+
+  console.log(formErrors);
   return (
     <>
       <Grid container className="auth-container">
@@ -84,7 +106,7 @@ const Signup = () => {
           </div>
           <div className="auth-form-box">
             <div className="auth-heading">
-              <CustomHeading heading="Sign up" variant="h5" />
+              <CustomHeading title="Sign up" variant="h5" />
             </div>
             <div className="auth-form">
               <form>
@@ -92,6 +114,7 @@ const Signup = () => {
                   <Grid item md={6} xs={6} sx={{ paddingRight: 2 }}>
                     <CustomTextField
                       variant="standard"
+                      margin="normal"
                       autoFocus={true}
                       label="First Name"
                       name="firstName"
@@ -106,6 +129,7 @@ const Signup = () => {
                   <Grid item md={6} xs={6}>
                     <CustomTextField
                       variant="standard"
+                      margin="normal"
                       label="Last Name"
                       name="lastName"
                       id="lastName"
@@ -119,6 +143,7 @@ const Signup = () => {
 
                 <CustomTextField
                   variant="standard"
+                  margin="normal"
                   label="Email Address"
                   name="email"
                   id="email"
@@ -130,6 +155,7 @@ const Signup = () => {
 
                 <CustomTextField
                   variant="standard"
+                  margin="normal"
                   label="Password"
                   type="password"
                   name="password"
@@ -140,8 +166,21 @@ const Signup = () => {
                   onChange={handleChange}
                 />
 
+                <CustomTextField
+                  variant="standard"
+                  margin="normal"
+                  label="Confirm Password"
+                  type="password"
+                  name="confirmPassword"
+                  id="confirmPassword"
+                  error={formErrors?.ConfirmPasswordErrorFlag}
+                  helperText={formErrors?.confirmPasswordHelperText}
+                  fullWidth={true}
+                  onChange={handleChange}
+                />
+
                 <CustomButton
-                  label="Submit"
+                  label="Sign Up"
                   fullWidth={true}
                   variant="contained"
                   type="submit"

@@ -1,5 +1,6 @@
 const isBlankField = (value) => {
   if (value === "") return "Field should not be blank";
+  else return "";
 };
 
 const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -17,6 +18,11 @@ const isValidPassword = (password) => {
   else return "";
 };
 
+const isValidConfirmPassword = (password, confirmPassword) => {
+  if (confirmPassword !== password) return "Password does not match";
+  else return "";
+};
+
 const charRegex = /^[a-zA-Z]*$/;
 const isValidName = (name) => {
   if (name !== "" && !charRegex.test(name))
@@ -24,4 +30,10 @@ const isValidName = (name) => {
   else return "";
 };
 
-export { isValidEmail, isValidPassword, isBlankField, isValidName };
+export {
+  isValidEmail,
+  isValidPassword,
+  isBlankField,
+  isValidName,
+  isValidConfirmPassword,
+};

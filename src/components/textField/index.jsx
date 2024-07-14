@@ -15,11 +15,16 @@ const CustomTextField = (props) => {
     variant,
     autoFocus,
     required,
+    placeholder,
+    margin,
+    size,
+    select,
   } = props;
   return (
     <div className="textfield">
       <TextField
-        margin="normal"
+        select={select}
+        margin={margin}
         required={required}
         type={type}
         label={label}
@@ -32,7 +37,12 @@ const CustomTextField = (props) => {
         error={error}
         fullWidth={fullWidth}
         helperText={helperText}
-      />
+        placeholder={placeholder}
+        size={size}
+      >
+        {" "}
+        {props.children}
+      </TextField>
     </div>
   );
 };

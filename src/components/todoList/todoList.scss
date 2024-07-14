@@ -1,0 +1,47 @@
+.item-container {
+  display: flex;
+  background-color: #fff;
+  border-radius: 0.4em;
+  padding: 1em 1em;
+}
+
+.task-box {
+  text-align: left;
+}
+
+.checkbox {
+  display: flex;
+  align-items: center;
+}
+
+.task-title-box {
+  display: flex;
+  align-items: center;
+  padding-bottom: 0.4em;
+
+  .title {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: rgb(99, 99, 99);
+  }
+
+  .material-icons {
+    padding-right: 0.2em;
+    font-size: 1.4em;
+    color: rgb(99, 99, 99);
+  }
+}
+
+.date {
+  display: flex;
+  color: rgb(99, 99, 99);
+  font-size: 0.9em;
+}
+
+.btn-box {
+  display: flex;
+  flex-grow: 1;
+  gap: 10px;
+  justify-content: flex-end;
+  align-items: center;
+}
