@@ -1,4 +1,4 @@
-export const ENV_PATH = "todo-app-api-rust.vercel.app";
+export const ENV_PATH = "https://todo-app-api-rust.vercel.app";
 
 export const SIGNUP_SUCCESS_MSG =
   "Congratulations, your account has been successfully created. Please login.";
