@@ -1,4 +1,48 @@
-export const AUTH_API_BASEPATH_URL = "/api/v1/account";
+export const ENV_PATH = "http://localhost:7000";
+
+export const SIGNUP_SUCCESS_MSG =
+  "Congratulations, your account has been successfully created. Please login.";
+export const SIGNUP_HEADING = "Create an new account";
+
+export const TODO_UPDATE_SUCCESS_MSG = "Task updated successfully!";
+export const TODO_ADD_SUCCESS_MSG = "Task added successfully!";
+export const TODO_DELETE_SUCCESS_MSG = "Task deleted successfully!";
+export const TODO_DONE_SUCCESS_MSG = "Task marked as done successfully!";
+export const NO_DATA_FOUND = "No data found!";
+
+export const errorMsg = {
+  401: "Email or Password is incorrect. Please enter valid credentials.",
+  400: "Something went wrong. Please try again.",
+  default: "Something went wrong. Please try again.",
+};
+
+export const SignupErrorMsg = {
+  401: "User already exist",
+  400: "Something went wrong. Please try again.",
+  default: "Something went wrong. Please try again.",
+};
+
+export const getAllTaskErrorMsg = {
+  404: "Something went wrong. Please try again.",
+  204: "No data found!",
+  default: "Something went wrong. Please try again.",
+};
+
+export const createTaskErrorMsg = {
+  404: "Something went wrong. Please try again",
+  default: "Something went wrong. Please try again.",
+};
+
+export const deleteTaskErrorMsg = {
+  400: "Something went wrong. Please try again.",
+  404: "Task not found!",
+  default: "Something went wrong. Please try again.",
+};
+
+export const sortMenuData = [
+  { value: "pending", label: "Pending" },
+  { value: "done", label: "Done" },
+];
 
 export const CategoryData = [
   {
@@ -41,3 +85,14 @@ export const CategoryData = [
     value: "Other",
   },
 ];
+
+// export const isDoneData = [
+//   {
+//     label: "Yes",
+//     value: true,
+//   },
+//   {
+//     label: "No",
+//     value: false,
+//   },
+// ];

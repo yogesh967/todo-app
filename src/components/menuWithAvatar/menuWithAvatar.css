@@ -1,0 +1,16 @@
+.arrow {
+  transition: transform 0.3s ease;
+}
+
+.arrow.rotate {
+  transform: rotate(180deg);
+}
+
+.avatar-label {
+  padding-left: 0.6em;
+}
+
+.MuiAvatar-root {
+  width: 32px !important;
+  height: 32px !important;
+}

@@ -1,16 +1,15 @@
 .todo-container {
   padding: 2em 1em;
-  display: flex;
-  align-items: center;
-  // min-height: 100vh;
+  min-height: 100vh;
+  justify-content: center;
   background-color: #f2f2f2;
 }
 
-.todo-box {
-  margin: 0 auto !important;
-  text-align: center;
-  // background-color: aqua;
-  // padding: 2em;
+.todo-header {
+  display: flex;
+  padding-bottom: 2em;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .add-filter-container {
@@ -18,6 +17,15 @@
   flex-direction: row;
   justify-content: space-between;
   padding: 1em 0;
+
+  .material-icons {
+    padding-right: 0.2em;
+    // font-size: 1.25em;
+  }
+
+  .btn-label {
+    line-height: 0 !important;
+  }
 }
 
 .list-container {
@@ -28,4 +36,19 @@
   border-radius: 0.5em;
   padding: 1em;
   // box-shadow: rgba(75, 75, 75, 0.2) 0px 2px 4px 0px;
+
+  .no-data-msg {
+    margin: 0;
+    padding: 0.4em 0;
+    text-align: center;
+    color: #000000de;
+  }
+}
+
+.alert-container {
+  padding-bottom: 1em;
+}
+.sort-container {
+  display: flex;
+  justify-content: end;
 }

@@ -10,12 +10,12 @@
 .auth-box {
   margin: 0 auto !important;
   text-align: center;
-}
 
-.todo-logo {
-  display: flex;
-  justify-content: space-evenly;
-  padding-bottom: 2em;
+  .todo-logo {
+    display: flex;
+    justify-content: space-evenly;
+    padding-bottom: 2em;
+  }
 }
 
 .auth-form-box {
@@ -23,7 +23,9 @@
   border-radius: 0.5em;
   background-color: #fff;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
 
+.auth-form {
   button {
     margin-top: 1.8em;
     background-color: #4361ee;
@@ -31,7 +33,7 @@
 }
 
 .auth-heading {
-  padding-bottom: 0.6em;
+  padding-bottom: 1.6em;
 }
 
 .auth-link-box {

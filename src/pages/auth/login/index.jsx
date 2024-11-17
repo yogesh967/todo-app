@@ -1,5 +1,5 @@
 import { Grid } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import CustomButton from "../../../components/button";
 import CustomHeading from "../../../components/heading";
 import CustomLink from "../../../components/link";
@@ -9,23 +9,33 @@ import {
   isBlankField,
   isValidEmail,
   isValidPassword,
-} from "../../../utils/validation";
+} from "../../../services/utils/validation";
 import "./../style.scss";
 import { useNavigate } from "react-router-dom";
+import { userLogin } from "../../../services/apiService/auth";
+import CollapseAlert from "../../../components/alert";
+import { clearSession } from "../../../services/utils/ManageSessions";
+import { AuthContext } from "../../../context/AuthContext";
+import BackdropLoader from "../../../components/backdrop";
 
 const Login = () => {
   const initialState = {
-    firstName: "",
-    lastName: "",
     email: "",
     password: "",
-    token: "",
   };
-  const navigate = useNavigate();
 
   const [userValues, setUserValues] = useState(initialState);
   const [formErrors, setFormErrors] = useState({});
   const [submitForm, setSubmitForm] = useState(false);
+  const [loader, setLoader] = useState(false);
+  const [alertOptions, setAlertOptions] = useState({
+    open: false,
+    message: "",
+  });
+
+  const navigate = useNavigate();
+
+  const { login, logout } = useContext(AuthContext);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -33,13 +43,38 @@ const Login = () => {
     setSubmitForm(true);
   };
 
+  const closeAlert = () => {
+    setAlertOptions({ ...alertOptions, open: false });
+  };
+
+  useEffect(() => {
+    logout();
+  }, []);
+
   useEffect(() => {
     if (submitForm && Object.keys(formErrors).length === 0) {
-      // console.log(userValues);
-      navigate("/todo");
+      setAlertOptions({
+        open: false,
+        message: "",
+      });
+      const handleLogin = async () => {
+        setLoader(true);
+        try {
+          const res = await userLogin(userValues);
+          if (res?.token) {
+            // setSession("token", res?.token);
+            setLoader(false);
+            login(res?.token);
+            navigate("/todo");
+          }
+        } catch (err) {
+          setLoader(false);
+          setAlertOptions({ open: true, message: err.message });
+        }
+      };
+      handleLogin();
     }
   }, [formErrors]);
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUserValues({ ...userValues, [name]: value });
@@ -47,18 +82,19 @@ const Login = () => {
 
   const validateForm = (values) => {
     const errors = {};
-    const email = isValidEmail(values.email) || isBlankField(values.email);
-    const password =
-      isValidPassword(values.password) || isBlankField(values.password);
-
-    if (email !== "") {
-      errors.emailErrorFlag = true;
-      errors.emailHelperText = email;
-    }
-
-    if (password !== "") {
-      errors.passwordErrorFlag = true;
-      errors.passwordHelperText = password;
+    for (const [key, value] of Object.entries(values)) {
+      let errMsg;
+      switch (key) {
+        case "email":
+          errMsg = isValidEmail(value) || isBlankField(value);
+          break;
+        case "password":
+          errMsg = isValidPassword(value) || isBlankField(value);
+          break;
+        default:
+          break;
+      }
+      if (errMsg) errors[key] = errMsg;
     }
     return errors;
   };
@@ -73,6 +109,16 @@ const Login = () => {
             <div className="auth-heading">
               <CustomHeading title="Login" variant="h5" />
             </div>
+            <div className="alertBox">
+              {alertOptions?.open && (
+                <CollapseAlert
+                  open={alertOptions.open}
+                  severity="error"
+                  message={alertOptions.message}
+                  handleClose={closeAlert}
+                />
+              )}
+            </div>
             <div className="auth-form">
               <form>
                 <CustomTextField
@@ -82,8 +128,9 @@ const Login = () => {
                   label="Email Address"
                   name="email"
                   id="email"
-                  error={formErrors?.emailErrorFlag}
-                  helperText={formErrors?.emailHelperText}
+                  value={userValues?.email}
+                  error={formErrors?.email ? true : false}
+                  helperText={formErrors?.email}
                   fullWidth={true}
                   onChange={handleChange}
                 />
@@ -95,8 +142,9 @@ const Login = () => {
                   type="password"
                   name="password"
                   id="password"
-                  error={formErrors?.passwordErrorFlag}
-                  helperText={formErrors?.passwordHelperText}
+                  value={userValues.password}
+                  error={formErrors?.password ? true : false}
+                  helperText={formErrors?.password}
                   fullWidth={true}
                   onChange={handleChange}
                 />
@@ -117,6 +165,7 @@ const Login = () => {
           </div>
         </Grid>
       </Grid>
+      {loader && <BackdropLoader open={loader} />}
     </>
   );
 };

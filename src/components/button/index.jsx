@@ -12,7 +12,9 @@ const CustomButton = (props) => {
       size={size}
       onClick={onClick}
     >
-      {icon ? <span className="material-icons">{icon}</span> : label}
+      {icon && <span className="material-icons">{icon}</span>}
+
+      {label && <div className="btn-label">{label}</div>}
     </Button>
   );
 };

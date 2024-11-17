@@ -1,26 +1,25 @@
-.date-range {
+.dataTime-Container {
   display: flex;
   flex-direction: row;
-}
-.dataTime-Container {
-  .css-z3c6am-MuiFormControl-root-MuiTextField-root {
-    margin-top: 16px;
-    margin-bottom: 8px;
-  }
-  .css-nxo287-MuiInputBase-input-MuiOutlinedInput-input {
-    padding: 8.5px 14px !important;
-  }
 
   .css-14s5rfu-MuiFormLabel-root-MuiInputLabel-root {
     transform: translate(14px, 9px) scale(1);
   }
 }
 
+// .dataTime-Container {
+// .css-z3c6am-MuiFormControl-root-MuiTextField-root {
+//   margin-top: 16px;
+// }
+
+// .css-nxo287-MuiInputBase-input-MuiOutlinedInput-input {
+//   padding: 8.5px 14px !important;
+// }
+
 .calender-icon {
   display: flex;
   align-items: center;
   .material-icons {
-    padding-top: 6px;
     padding-right: 8px;
     color: #1976d2;
     font-size: 24px;

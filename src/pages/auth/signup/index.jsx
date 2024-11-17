@@ -1,5 +1,5 @@
-import { Grid } from "@mui/material";
 import { useEffect, useState } from "react";
+import { Grid } from "@mui/material";
 import CustomButton from "../../../components/button";
 import CustomHeading from "../../../components/heading";
 import CustomLink from "../../../components/link";
@@ -11,8 +11,13 @@ import {
   isValidEmail,
   isValidName,
   isValidPassword,
-} from "../../../utils/validation";
+} from "../../../services/utils/validation";
 import "./../style.scss";
+import { userSignUp } from "../../../services/apiService/auth";
+import CollapseAlert from "../../../components/alert";
+import { SIGNUP_HEADING, SIGNUP_SUCCESS_MSG } from "../../../constants";
+import BackdropLoader from "../../../components/backdrop";
+import { Link } from "react-router-dom";
 
 const Signup = () => {
   const initialState = {
@@ -23,31 +28,55 @@ const Signup = () => {
     confirmPassword: "",
   };
   const [userValues, setUserValues] = useState(initialState);
-  const [formErrors, setFormErrors] = useState({});
+  const [formErrors, setFormErrors] = useState();
   const [isSubmit, setIsSubmit] = useState(false);
+  const [loader, setLoader] = useState(false);
+  const [alertOptions, setAlertOptions] = useState({
+    open: false,
+    severity: "",
+    message: "",
+  });
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setFormErrors(validateForm(userValues));
-    console.log(formErrors);
     setIsSubmit(true);
   };
 
   useEffect(() => {
-    console.log("submit useEffect: ");
-
     if (isSubmit && Object.keys(formErrors).length === 0) {
-      console.log(userValues);
-      const requestOptions = {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({
-          firstName: userValues?.firstName,
-          lastName: userValues?.lastName,
-          email: userValues?.email,
-          password: userValues.con,
-        }),
+      setAlertOptions({
+        open: false,
+        message: "",
+      });
+      const signup = async () => {
+        setLoader(true);
+        try {
+          const res = await userSignUp({
+            firstName: userValues?.firstName,
+            lastName: userValues?.lastName,
+            email: userValues?.email,
+            password: userValues?.password,
+          });
+          if (res) {
+            setLoader(false);
+            setUserValues(initialState);
+            setAlertOptions({
+              open: true,
+              severity: "success",
+              message: SIGNUP_SUCCESS_MSG,
+            });
+          }
+        } catch (err) {
+          setLoader(false);
+          setAlertOptions({
+            open: true,
+            severity: "error",
+            message: err.message,
+          });
+        }
       };
+      signup();
     }
   }, [formErrors]);
 
@@ -58,45 +87,36 @@ const Signup = () => {
 
   const validateForm = (values) => {
     const errors = {};
-    const firstName =
-      isValidName(values.firstName) || isBlankField(values.firstName);
-    const lastName =
-      isValidName(values.lastName) || isBlankField(values.lastName);
-    const email = isValidEmail(values.email) || isBlankField(values.email);
-    const password =
-      isValidPassword(values.password) || isBlankField(values.password);
-    const confirmPassword =
-      isValidConfirmPassword(values.password, values.confirmPassword) ||
-      isBlankField(values.confirmPassword);
-
-    if (firstName !== "") {
-      errors.firstNameErrorFlag = true;
-      errors.firstNameHelperText = firstName;
-    }
-
-    if (lastName !== "") {
-      errors.lastNameErrorFlag = true;
-      errors.lastNameHelperText = lastName;
-    }
-
-    if (email !== "") {
-      errors.emailErrorFlag = true;
-      errors.emailHelperText = email;
-    }
-
-    if (password !== "") {
-      errors.passwordErrorFlag = true;
-      errors.passwordHelperText = password;
-    }
-    if (confirmPassword !== "") {
-      console.log("confirm pass function");
-      errors.confirmPasswordErrorFlag = true;
-      errors.confirmPasswordHelperText = confirmPassword;
+    for (const [key, value] of Object.entries(values)) {
+      let errMsg = "";
+      switch (key) {
+        case "firstName":
+        case "lastName":
+          errMsg = isValidName(value) || isBlankField(value);
+          break;
+        case "email":
+          errMsg = isValidEmail(value) || isBlankField(value);
+          break;
+        case "password":
+          errMsg = isValidPassword(value) || isBlankField(value);
+          break;
+        case "confirmPassword":
+          errMsg =
+            isValidConfirmPassword(values.password, value) ||
+            isBlankField(value);
+          break;
+        default:
+          break;
+      }
+      if (errMsg) errors[key] = errMsg;
     }
     return errors;
   };
 
-  console.log(formErrors);
+  const closeAlert = () => {
+    setAlertOptions({ ...alertOptions, open: false });
+  };
+
   return (
     <>
       <Grid container className="auth-container">
@@ -106,8 +126,16 @@ const Signup = () => {
           </div>
           <div className="auth-form-box">
             <div className="auth-heading">
-              <CustomHeading title="Sign up" variant="h5" />
+              <CustomHeading title={SIGNUP_HEADING} variant="h5" />
             </div>
+            {alertOptions?.open && (
+              <CollapseAlert
+                open={alertOptions.open}
+                severity={alertOptions.severity}
+                message={alertOptions.message}
+                handleClose={closeAlert}
+              />
+            )}
             <div className="auth-form">
               <form>
                 <Grid container>
@@ -119,8 +147,9 @@ const Signup = () => {
                       label="First Name"
                       name="firstName"
                       id="firstName"
-                      error={formErrors?.firstNameErrorFlag}
-                      helperText={formErrors?.firstNameHelperText}
+                      value={userValues?.firstName}
+                      error={formErrors?.firstName ? true : false}
+                      helperText={formErrors?.firstName}
                       fullWidth={true}
                       onChange={handleChange}
                     />
@@ -133,8 +162,9 @@ const Signup = () => {
                       label="Last Name"
                       name="lastName"
                       id="lastName"
-                      error={formErrors?.lastNameErrorFlag}
-                      helperText={formErrors?.lastNameHelperText}
+                      value={userValues?.lastName}
+                      error={formErrors?.lastName ? true : false}
+                      helperText={formErrors?.lastName}
                       fullWidth={true}
                       onChange={handleChange}
                     />
@@ -147,8 +177,9 @@ const Signup = () => {
                   label="Email Address"
                   name="email"
                   id="email"
-                  error={formErrors?.emailErrorFlag}
-                  helperText={formErrors?.emailHelperText}
+                  value={userValues?.email}
+                  error={formErrors?.email ? true : false}
+                  helperText={formErrors?.email}
                   fullWidth={true}
                   onChange={handleChange}
                 />
@@ -160,8 +191,9 @@ const Signup = () => {
                   type="password"
                   name="password"
                   id="password"
-                  error={formErrors?.passwordErrorFlag}
-                  helperText={formErrors?.passwordHelperText}
+                  value={userValues?.password}
+                  error={formErrors?.password ? true : false}
+                  helperText={formErrors?.password}
                   fullWidth={true}
                   onChange={handleChange}
                 />
@@ -173,8 +205,9 @@ const Signup = () => {
                   type="password"
                   name="confirmPassword"
                   id="confirmPassword"
-                  error={formErrors?.ConfirmPasswordErrorFlag}
-                  helperText={formErrors?.confirmPasswordHelperText}
+                  value={userValues?.confirmPassword}
+                  error={formErrors?.confirmPassword ? true : false}
+                  helperText={formErrors?.confirmPassword}
                   fullWidth={true}
                   onChange={handleChange}
                 />
@@ -195,6 +228,7 @@ const Signup = () => {
           </div>
         </Grid>
       </Grid>
+      {loader && <BackdropLoader open={loader} />}
     </>
   );
 };

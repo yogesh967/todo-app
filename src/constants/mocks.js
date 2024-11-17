@@ -2,7 +2,7 @@ export const todoData = [
   {
     id: 1,
     taskName: "Read book",
-    fromDate: "5:23 AM, 01/06/2022",
+    fromDate: "5:23 AM, 02/06/2022",
     toDate: "5:23 AM, 02/06/2022",
     category: {
       title: "Learning",
@@ -15,7 +15,7 @@ export const todoData = [
   {
     id: 2,
     taskName: "Gorcery",
-    fromDate: "5:23 AM, 01/06/2022",
+    fromDate: "5:23 AM, 12/06/2022",
     toDate: "5:23 AM, 02/06/2022",
     category: {
       title: "Family",
