@@ -85,14 +85,3 @@ export const CategoryData = [
     value: "Other",
   },
 ];
-
-// export const isDoneData = [
-//   {
-//     label: "Yes",
-//     value: true,
-//   },
-//   {
-//     label: "No",
-//     value: false,
-//   },
-// ];
