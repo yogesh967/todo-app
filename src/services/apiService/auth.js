@@ -1,8 +1,9 @@
 // import { setSession } from "../utils/ManageSessions";
 
-import { ENV_PATH, errorMsg, SignupErrorMsg } from "../../constants";
+import { errorMsg, SignupErrorMsg } from "../../constants";
 
-const BASE_PATH_URL = `${ENV_PATH}/api/v1/auth`;
+const envUrl = process.env.REACT_APP_API_BASEURL;
+const BASE_PATH_URL = `${envUrl}/api/v1/auth`;
 
 const userLogin = async (data) => {
   try {

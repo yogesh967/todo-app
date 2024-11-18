@@ -1,12 +1,12 @@
 import {
   createTaskErrorMsg,
   deleteTaskErrorMsg,
-  ENV_PATH,
   getAllTaskErrorMsg,
 } from "../../constants";
 import { getSession } from "../utils/ManageSessions";
 
-const BASE_PATH_URL = `${ENV_PATH}/api/v1/todo`;
+const envUrl = process.env.REACT_APP_API_BASEURL;
+const BASE_PATH_URL = `${envUrl}/api/v1/todo`;
 
 const getAllTodo = async () => {
   try {
