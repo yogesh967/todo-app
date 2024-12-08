@@ -20,8 +20,8 @@ import BackdropLoader from "../../../components/backdrop";
 
 const Login = () => {
   const initialState = {
-    email: "",
-    password: "",
+    email: "yogesh@gmail.com",
+    password: "123456789",
   };
 
   const [userValues, setUserValues] = useState(initialState);
