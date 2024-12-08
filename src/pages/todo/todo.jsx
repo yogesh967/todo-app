@@ -324,12 +324,12 @@ const Todo = () => {
               onClick={handleAddTask}
               icon="add_circle"
             />
-            <CustomTextField
+            {/* <CustomTextField
               name="search"
               id="search"
               placeholder="Search"
               size="small"
-            />
+            /> */}
           </div>
           {alert?.open && (
             <div className="alert-container">
