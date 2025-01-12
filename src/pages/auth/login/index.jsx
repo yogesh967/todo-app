@@ -14,7 +14,6 @@ import "./../style.scss";
 import { useNavigate } from "react-router-dom";
 import { userLogin } from "../../../services/apiService/auth";
 import CollapseAlert from "../../../components/alert";
-import { clearSession } from "../../../services/utils/ManageSessions";
 import { AuthContext } from "../../../context/AuthContext";
 import BackdropLoader from "../../../components/backdrop";
 

@@ -30,7 +30,6 @@ import BackdropLoader from "../../components/backdrop";
 import CustomSelect from "../../components/selectField";
 import MenuWithAvatar from "../../components/menuWithAvatar";
 import { AuthContext } from "../../context/AuthContext";
-import { useNavigate } from "react-router-dom";
 
 const Todo = () => {
   const initialState = {
@@ -57,6 +56,7 @@ const Todo = () => {
   const [filteredTask, setFilteredTask] = useState(null);
   const [isfetchAllTask, setIsfetchAllTask] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
   const [alert, setAlert] = useState({
     open: false,
     message: "",
@@ -281,9 +281,17 @@ const Todo = () => {
     const isDone = sort === "done" ? true : false;
     if (task) {
       const filteredData = task?.filter((item) => item.isDone === isDone);
-      setFilteredTask(filteredData);
+      if (searchTerm.length) {
+        console.log("in search useEffect");
+        const searchFilteredData = filteredData?.filter((item) =>
+          item?.taskName.toLowerCase().startsWith(searchTerm.toLowerCase())
+        );
+        setFilteredTask(searchFilteredData);
+      } else {
+        setFilteredTask(filteredData);
+      }
     }
-  }, [task, sort]);
+  }, [task, sort, searchTerm]);
 
   const handleUserList = (event) => {
     setAnchorEl(event.currentTarget);
@@ -324,12 +332,13 @@ const Todo = () => {
               onClick={handleAddTask}
               icon="add_circle"
             />
-            {/* <CustomTextField
+            <CustomTextField
               name="search"
               id="search"
               placeholder="Search"
               size="small"
-            /> */}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
           </div>
           {alert?.open && (
             <div className="alert-container">
